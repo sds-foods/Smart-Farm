@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+
+<meta name="viewport"
+     content="width=device-width, initial-scale=1.0">
+
+  <title>Smart Farm Login</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(
+        135deg,
+        #e8f5e9,
+        #c8e6c9
+      );
+      padding: 20px;
+    }
+
+    .login-container {
+      width: 100%;
+      max-width: 400px;
+      background: white;
+      padding: 35px;
+      border-radius: 20px;
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.15);
+    }
+
+    .logo {
+      text-align: center;
+      font-size: 55px;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #3dad55;
+      margin-bottom: 5px;
+      font-size: 35px;
+      font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #777;
+      margin-bottom: 30px;
+      font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    input {
+      width: 100%;
+      padding: 13px;
+      margin-bottom: 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 15px;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #4caf50;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      background: #2e7d32;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #1b5e20;
+    }
+
+    button:disabled {
+      background: #999;
+      cursor: not-allowed;
+    }
+
+    #message {
+      text-align: center;
+      margin-top: 18px;
+      font-size: 14px;
+      min-height: 18px;
+    }
+
+    .error {
+      color: #d32f2f;
+    }
+
+    .success {
+      color: #2e7d32;
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <div class="login-container">
+
+
+<div class="logo"></div>
+
+<h1>Smart Farm</h1>
+
+<p class="subtitle">
+  Management System
+</p>
+
+<form id="loginForm">
+
+  <label for="username">
+    Username
+  </label>
+
+  <input
+    type="text"
+    id="username"
+    placeholder="Enter username"
+    autocomplete="username"
+    required
+  >
+
+  <label for="password">
+    Password
+  </label>
+
+  <input
+    type="password"
+    id="password"
+    placeholder="Enter password"
+    autocomplete="current-password"
+    required
+  >
+
+  <button type="submit" id="loginButton">
+    Login
+  </button>
+
+</form>
+
+<p id="message"></p>
+
+
+  </div>
+
+  <script>
+
+    // Google Apps Script API URL
+    const API_URL =
+      "https://script.google.com/macros/s/AKfycbxaz8UKl3T81aOR9qI965aSddV0iW2jSwFEVPVSbW1JPFtytaqi_u7Nm0yyIXbjlmGyvA/exec";
+
+
+    // Dashboard URL එක මෙතනට දාන්න
+    const DASHBOARD_URL = "home.html";
+
+
+    const loginForm =
+      document.getElementById("loginForm");
+
+    const loginButton =
+      document.getElementById("loginButton");
+
+    const message =
+      document.getElementById("message");
+
+
+    loginForm.addEventListener("submit", async function(event) {
+
+      event.preventDefault();
+
+      const username =
+        document.getElementById("username").value.trim();
+
+      const password =
+        document.getElementById("password").value;
+
+
+      if (!username || !password) {
+        message.textContent =
+          "Please enter username and password.";
+
+        message.className = "error";
+
+        return;
+      }
+
+
+      message.textContent = "Checking login...";
+      message.className = "";
+
+      loginButton.disabled = true;
+      loginButton.textContent = "Please wait...";
+
+
+      try {
+
+        // Google Apps Script API එකට data යවනවා
+        const response = await fetch(API_URL, {
+
+          method: "POST",
+
+          headers: {
+            "Content-Type": "text/plain;charset=utf-8"
+          },
+
+          body: JSON.stringify({
+            action: "login",
+            username: username,
+            password: password
+          })
+
+        });
+
+
+        const result = await response.json();
+
+
+        if (result.success) {
+
+          message.textContent =
+            "Login successful! Redirecting...";
+
+          message.className = "success";
+
+
+          // User details temporary save කරනවා
+          sessionStorage.setItem(
+            "userName",
+            result.name || username
+          );
+
+          sessionStorage.setItem(
+            "userRole",
+            result.role || "User"
+          );
+
+
+          // Dashboard එකට redirect කරනවා
+          setTimeout(function() {
+
+            window.location.href = DASHBOARD_URL;
+
+          }, 800);
+
+
+        } else {
+
+          message.textContent =
+            result.message || "Invalid username or password.";
+
+          message.className = "error";
+
+        }
+
+      } catch (error) {
+
+        console.error("Login Error:", error);
+
+        message.textContent =
+          "Unable to connect to the server.";
+
+        message.className = "error";
+
+      }
+
+
+      loginButton.disabled = false;
+      loginButton.textContent = "Login";
+
+    });
+
+  </script>
+
+</body>
+
+</html>

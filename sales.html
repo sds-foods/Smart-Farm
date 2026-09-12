@@ -1,0 +1,1384 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Sales — SDS Foods</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+
+  --bg:#F1F2F5;
+
+  --surface:#FFFFFF;
+
+  --ink:#1A1E27;
+
+  --muted:#6B7280;
+
+  --sidebar:#14213D;
+
+  --sidebar-hover:#1D2E52;
+
+  --sidebar-text:#B9C3DA;
+
+  --accent:#C08A3E;
+
+  --accent-dark:#A5732E;
+
+  --teal:#3F7D6B;
+
+  --danger:#B94A48;
+
+  --border:#E4E6EB;
+
+  --radius-sm:6px;
+
+  --radius-md:10px;
+
+}
+
+*{
+
+  box-sizing:border-box;
+
+}
+
+html,body{
+
+  margin:0;
+
+  padding:0;
+
+}
+
+body{
+
+  font-family:'Inter',sans-serif;
+
+  background:var(--bg);
+
+  color:var(--ink);
+
+  display:flex;
+
+  min-height:100vh;
+
+}
+
+h1,h2,h3,.brand,.nav-label{
+
+  font-family:'Space Grotesk',sans-serif;
+
+}
+
+.sidebar{
+
+  width:230px;
+
+  background:var(--sidebar);
+
+  color:var(--sidebar-text);
+
+  display:flex;
+
+  flex-direction:column;
+
+  position:fixed;
+
+  top:0;
+
+  left:0;
+
+  bottom:0;
+
+  z-index:40;
+
+  transition:transform .25s ease;
+
+}
+
+.brand{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:10px;
+
+  padding:22px 20px 18px 22px;
+
+  color:#fff;
+
+  font-size:19px;
+
+  font-weight:700;
+
+  letter-spacing:.2px;
+
+  border-bottom:1px solid rgba(255,255,255,.08);
+
+}
+
+.brand-mark{
+
+  width:26px;
+
+  height:26px;
+
+  border-radius:7px;
+
+  background:linear-gradient(135deg,var(--accent),var(--accent-dark));
+
+  flex-shrink:0;
+
+}
+
+nav.navlist{
+
+  margin-top:14px;
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:2px;
+
+  padding:0 10px;
+
+}
+
+.navlink{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:12px;
+
+  padding:11px 12px;
+
+  border-radius:var(--radius-sm);
+
+  color:var(--sidebar-text);
+
+  text-decoration:none;
+
+  font-size:14.5px;
+
+  font-weight:500;
+
+}
+
+.navlink svg{
+
+  width:18px;
+
+  height:18px;
+
+  flex-shrink:0;
+
+  opacity:.85;
+
+}
+
+.navlink:hover{
+
+  background:var(--sidebar-hover);
+
+  color:#fff;
+
+}
+
+.navlink.active{
+
+  background:var(--accent);
+
+  color:#fff;
+
+}
+
+.navlink.active svg{
+
+  opacity:1;
+
+}
+
+.sidebar-foot{
+
+  margin-top:auto;
+
+  padding:16px 22px;
+
+  font-size:12px;
+
+  color:#8792AC;
+
+  border-top:1px solid rgba(255,255,255,.08);
+
+}
+
+.main{
+
+  margin-left:230px;
+
+  flex:1;
+
+  display:flex;
+
+  flex-direction:column;
+
+  min-height:100vh;
+
+}
+
+.topbar{
+
+  background:var(--surface);
+
+  border-bottom:1px solid var(--border);
+
+  padding:20px 32px;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+}
+
+.topbar h1{
+
+  margin:0;
+
+  font-size:22px;
+
+  font-weight:600;
+
+}
+
+.topbar .sub{
+
+  margin:2px 0 0;
+
+  color:var(--muted);
+
+  font-size:13.5px;
+
+}
+
+.menu-btn{
+
+  display:none;
+
+  background:none;
+
+  border:none;
+
+  cursor:pointer;
+
+  padding:6px;
+
+}
+
+.menu-btn svg{
+
+  width:22px;
+
+  height:22px;
+
+  color:var(--ink);
+
+}
+
+.content{
+
+  padding:28px 32px 60px;
+
+  flex:1;
+
+}
+
+.panel{
+
+  background:var(--surface);
+
+  border:1px solid var(--border);
+
+  border-radius:var(--radius-md);
+
+  padding:24px;
+
+  margin-bottom:22px;
+
+}
+
+.panel h2{
+
+  margin:0 0 4px;
+
+  font-size:16px;
+
+  font-weight:600;
+
+}
+
+.panel .panel-sub{
+
+  margin:0 0 18px;
+
+  color:var(--muted);
+
+  font-size:13px;
+
+}
+
+.form-grid{
+
+  display:grid;
+
+  grid-template-columns:repeat(3,1fr);
+
+  gap:14px 16px;
+
+}
+
+.field{
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:6px;
+
+}
+
+.field label{
+
+  font-size:12.5px;
+
+  font-weight:600;
+
+  color:var(--muted);
+
+}
+
+.field input{
+
+  padding:9px 11px;
+
+  border:1px solid var(--border);
+
+  border-radius:var(--radius-sm);
+
+  font-size:14px;
+
+  font-family:'Inter',sans-serif;
+
+  color:var(--ink);
+
+  background:#FAFBFC;
+
+}
+
+.field input:focus{
+
+  outline:2px solid var(--accent);
+
+  outline-offset:1px;
+
+  border-color:var(--accent);
+
+}
+
+.field input[readonly]{
+
+  background:#F0EDE4;
+
+  color:var(--accent-dark);
+
+  font-weight:600;
+
+}
+
+.form-actions{
+
+  display:flex;
+
+  gap:10px;
+
+  margin-top:18px;
+
+}
+
+.btn{
+
+  padding:10px 18px;
+
+  border-radius:var(--radius-sm);
+
+  border:none;
+
+  font-size:14px;
+
+  font-weight:600;
+
+  cursor:pointer;
+
+  font-family:'Inter',sans-serif;
+
+}
+
+.btn-primary{
+
+  background:var(--accent);
+
+  color:#fff;
+
+}
+
+.btn-primary:hover{
+
+  background:var(--accent-dark);
+
+}
+
+.btn-ghost{
+
+  background:none;
+
+  border:1px solid var(--border);
+
+  color:var(--ink);
+
+}
+
+.btn-ghost:hover{
+
+  border-color:var(--muted);
+
+}
+
+.table-wrap{
+
+  overflow-x:auto;
+
+}
+
+table{
+
+  width:100%;
+
+  border-collapse:collapse;
+
+  font-size:13.5px;
+
+}
+
+th{
+
+  text-align:left;
+
+  padding:10px 12px;
+
+  color:var(--muted);
+
+  font-weight:600;
+
+  font-size:12px;
+
+  border-bottom:1px solid var(--border);
+
+  white-space:nowrap;
+
+}
+
+td{
+
+  padding:11px 12px;
+
+  border-bottom:1px solid var(--border);
+
+  white-space:nowrap;
+
+}
+
+tbody tr:hover{
+
+  background:#FAFBFC;
+
+}
+
+.row-actions{
+
+  display:flex;
+
+  gap:8px;
+
+}
+
+.icon-btn{
+
+  width:30px;
+
+  height:30px;
+
+  border-radius:7px;
+
+  border:1px solid var(--border);
+
+  background:#fff;
+
+  cursor:pointer;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+}
+
+.icon-btn svg{
+
+  width:15px;
+
+  height:15px;
+
+}
+
+.icon-btn.edit svg{
+
+  color:var(--teal);
+
+}
+
+.icon-btn.delete svg{
+
+  color:var(--danger);
+
+}
+
+.icon-btn.view svg{
+
+  color:var(--accent-dark);
+
+}
+
+.icon-btn:hover{
+
+  border-color:var(--muted);
+
+}
+
+.empty-row td{
+
+  text-align:center;
+
+  color:var(--muted);
+
+  padding:28px;
+
+}
+
+.amount{
+
+  font-weight:600;
+
+  color:var(--accent-dark);
+
+}
+
+.loading-row td{
+
+  text-align:center;
+
+  padding:28px;
+
+  color:var(--muted);
+
+}
+
+@media(max-width:900px){
+
+  .form-grid{
+
+    grid-template-columns:repeat(2,1fr);
+
+  }
+
+}
+
+@media(max-width:720px){
+
+  .sidebar{
+
+    transform:translateX(-100%);
+
+  }
+
+  .sidebar.open{
+
+    transform:translateX(0);
+
+  }
+
+  .main{
+
+    margin-left:0;
+
+  }
+
+  .menu-btn{
+
+    display:block;
+
+  }
+
+  .form-grid{
+
+    grid-template-columns:1fr;
+
+  }
+
+  .content{
+
+    padding:20px 16px 40px;
+
+  }
+
+  .topbar{
+
+    padding:18px 16px;
+
+  }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+<aside class="sidebar" id="sidebar">
+
+  <div class="brand">
+
+    <span class="brand-mark"></span>
+
+    SDS Foods
+
+  </div>
+
+  <nav class="navlist">
+
+    <a class="navlink" href="home.html">
+
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+
+        <path d="M3 11.5 12 4l9 7.5"/>
+
+        <path d="M5 10v10h5v-6h4v6h5V10"/>
+
+      </svg>
+
+      <span class="nav-label">Home</span>
+
+    </a>
+
+    <a class="navlink" href="monitoring.html">
+
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+
+        <path d="M3 12h4l3 8 4-16 3 8h4"/>
+
+      </svg>
+
+      <span class="nav-label">Monitoring</span>
+
+    </a>
+
+    <a class="navlink" href="report.html">
+
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+
+        <path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/>
+
+        <path d="M14 3v5h5"/>
+
+      </svg>
+
+      <span class="nav-label">Report</span>
+
+    </a>
+
+    <a class="navlink active" href="sales.html">
+
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+
+        <circle cx="9" cy="20" r="1.3"/>
+
+        <circle cx="18" cy="20" r="1.3"/>
+
+        <path d="M2 3h3l2.4 12.2a2 2 0 0 0 2 1.6h8.1a2 2 0 0 0 2-1.6L21 8H6"/>
+
+      </svg>
+
+      <span class="nav-label">Sales</span>
+
+    </a>
+
+    <a class="navlink" href="costs.html">
+
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+
+        <circle cx="12" cy="12" r="9"/>
+
+        <path d="M12 7v10M9.5 9.5a2.5 2.5 0 0 1 2.5-1h.3a2.2 2.2 0 0 1 0 4.4H12a2.2 2.2 0 0 0 0 4.4h.3a2.5 2.5 0 0 0 2.5-1"/>
+
+      </svg>
+
+      <span class="nav-label">Costs</span>
+
+    </a>
+
+    <a class="navlink" href="controll.html">
+
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+
+        <circle cx="12" cy="12" r="3"/>
+
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/>
+
+      </svg>
+
+      <span class="nav-label">Controll</span>
+
+    </a>
+
+  </nav>
+
+  <div class="sidebar-foot">Business Console v1.0</div>
+
+</aside>
+
+
+<div class="main">
+
+  <div class="topbar">
+
+    <div style="display:flex;align-items:center;gap:12px;">
+
+      <button class="menu-btn" id="menuBtn" aria-label="Toggle menu">
+
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+
+          <path d="M3 6h18M3 12h18M3 18h18"/>
+
+        </svg>
+
+      </button>
+
+      <div>
+
+        <h1>Sales</h1>
+
+        <p class="sub">Manage sales records</p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="content">
+
+    <div class="panel">
+
+      <h2 id="salesFormTitle">Add a sale</h2>
+
+      <p class="panel-sub">Record a new sale or update an existing entry.</p>
+
+      <div class="form-grid">
+
+        <div class="field">
+
+          <label>Product name</label>
+
+          <input id="s-product" type="text" placeholder="e.g. Ceramic mug">
+
+        </div>
+
+        <div class="field">
+
+          <label>Quantity</label>
+
+          <input id="s-qty" type="number" min="0" step="1" placeholder="0">
+
+        </div>
+
+        <div class="field">
+
+          <label>Selling price (unit)</label>
+
+          <input id="s-price" type="number" min="0" step="0.01" placeholder="0.00">
+
+        </div>
+
+        <div class="field">
+
+          <label>Customer name</label>
+
+          <input id="s-customer" type="text" placeholder="e.g. R. Perera">
+
+        </div>
+
+        <div class="field">
+
+          <label>Location</label>
+
+          <input id="s-location" type="text" placeholder="e.g. Colombo">
+
+        </div>
+
+        <div class="field">
+
+          <label>Total amount</label>
+
+          <input id="s-total" type="text" readonly value="0.00">
+
+        </div>
+
+      </div>
+
+      <div class="form-actions">
+
+        <button class="btn btn-primary" id="salesSaveBtn" onclick="saveSale()">
+
+          Add sale
+
+        </button>
+
+        <button class="btn btn-ghost" id="salesCancelBtn" style="display:none" onclick="resetSalesForm()">
+
+          Cancel edit
+
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <div class="panel">
+
+      <h2>Sales history</h2>
+
+      <p class="panel-sub">All recorded sales.</p>
+
+      <div class="table-wrap">
+
+        <table>
+
+          <thead>
+
+            <tr>
+
+              <th>Product</th>
+
+              <th>Qty</th>
+
+              <th>Unit price</th>
+
+              <th>Customer</th>
+
+              <th>Location</th>
+
+              <th>Total</th>
+
+              <th>Date</th>
+
+              <th>Actions</th>
+
+            </tr>
+
+          </thead>
+
+          <tbody id="salesTableBody">
+
+            <tr class="loading-row">
+
+              <td colspan="8">Loading sales...</td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+
+// =================================
+// API URL
+// =================================
+
+const API_URL = "https://script.google.com/macros/s/AKfycbz6HULejw0PPp33l8EOnsf4Mo1gSqKvAGCCExW-vgXCUgDvu_VLuVYgPHGxMhzove8/exec";
+
+let sales = [];
+
+let editingSaleId = null;
+
+
+// =================================
+// MOBILE MENU
+// =================================
+
+document.getElementById("menuBtn").onclick = function(){
+
+  document.getElementById("sidebar").classList.toggle("open");
+
+};
+
+
+// =================================
+// CALCULATE TOTAL
+// =================================
+
+function calcSaleTotal(){
+
+  const qty = Number(document.getElementById("s-qty").value) || 0;
+
+  const price = Number(document.getElementById("s-price").value) || 0;
+
+  document.getElementById("s-total").value = (qty * price).toFixed(2);
+
+}
+
+document.getElementById("s-qty").addEventListener("input", calcSaleTotal);
+
+document.getElementById("s-price").addEventListener("input", calcSaleTotal);
+
+
+// =================================
+// LOAD ALL SALES
+// =================================
+
+function loadSales(){
+
+  fetch(API_URL + "?action=getSales")
+
+    .then(response => response.json())
+
+    .then(result => {
+
+      if(result.success){
+
+        sales = result.data;
+
+        renderSales();
+
+      }else{
+
+        alert(result.message);
+
+      }
+
+    })
+
+    .catch(error => {
+
+      console.error(error);
+
+      document.getElementById("salesTableBody").innerHTML =
+
+        '<tr class="empty-row"><td colspan="8">Error loading sales.</td></tr>';
+
+    });
+
+}
+
+
+// =================================
+// ADD / UPDATE SALE
+// =================================
+
+function saveSale(){
+
+    const product = document.getElementById("s-product").value.trim();
+    const qty = Number(document.getElementById("s-qty").value);
+    const price = Number(document.getElementById("s-price").value);
+    const customer = document.getElementById("s-customer").value.trim();
+    const location = document.getElementById("s-location").value.trim();
+
+    if(!product || !Number.isFinite(qty) || qty <= 0 ||
+       !Number.isFinite(price) || price <= 0){
+
+        alert("Please fill in product name, quantity and selling price.");
+        return;
+    }
+
+    const data = {
+        action: editingSaleId ? "updateSale" : "addSale",
+        id: editingSaleId,
+        product: product,
+        qty: qty,
+        price: price,
+        customer: customer,
+        location: location
+    };
+
+    const btn = document.getElementById("salesSaveBtn");
+    btn.disabled = true;
+    btn.textContent = "Saving...";
+
+    fetch(API_URL, {
+        method: "POST",
+        headers: {
+            "Content-Type": "text/plain;charset=utf-8"
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => {
+        if(!response.ok){
+            throw new Error("Server error: " + response.status);
+        }
+        return response.json();
+    })
+    .then(result => {
+        if(result.success){
+
+            alert("Save Success!");
+
+            resetSalesForm();
+            loadSales();
+
+        }else{
+            alert("Save failed: " + (result.message || "Unknown error"));
+        }
+    })
+    .catch(error => {
+        console.error("Save Error:", error);
+        alert("Error saving sale: " + error.message);
+    })
+    .finally(() => {
+        btn.disabled = false;
+        btn.textContent = editingSaleId ? "Save changes" : "Add sale";
+    });
+}
+
+
+// =================================
+// EDIT SALE
+// =================================
+
+function editSale(id){
+
+  const rec = sales.find(s => String(s.id) === String(id));
+
+  if(!rec) return;
+
+  editingSaleId = id;
+
+  document.getElementById("s-product").value = rec.product;
+
+  document.getElementById("s-qty").value = rec.qty;
+
+  document.getElementById("s-price").value = rec.price;
+
+  document.getElementById("s-customer").value = rec.customer || "";
+
+  document.getElementById("s-location").value = rec.location || "";
+
+  calcSaleTotal();
+
+  document.getElementById("salesFormTitle").textContent = "Update sale";
+
+  document.getElementById("salesSaveBtn").textContent = "Save changes";
+
+  document.getElementById("salesCancelBtn").style.display = "inline-block";
+
+  window.scrollTo({top:0,behavior:"smooth"});
+
+}
+
+
+// =================================
+// VIEW SALE
+// =================================
+
+function viewSale(id){
+
+  const rec = sales.find(s => String(s.id) === String(id));
+
+  if(!rec) return;
+
+  alert(
+
+    "Sale Details\n\n" +
+
+    "Product: " + rec.product + "\n" +
+
+    "Quantity: " + rec.qty + "\n" +
+
+    "Unit Price: " + rec.price.toFixed(2) + "\n" +
+
+    "Customer: " + (rec.customer || "—") + "\n" +
+
+    "Location: " + (rec.location || "—") + "\n" +
+
+    "Total: " + rec.total.toFixed(2) + "\n\n" +
+
+    "Date: " + formatDate(rec.date)
+
+  );
+
+}
+
+
+// =================================
+// DELETE SALE
+// =================================
+
+function deleteSale(id){
+
+  if(!confirm("Delete this sale record?")) return;
+
+  fetch(API_URL, {
+
+    method:"POST",
+
+    body:JSON.stringify({
+
+      action:"deleteSale",
+
+      id:id
+
+    })
+
+  })
+
+  .then(response => response.json())
+
+  .then(result => {
+
+    if(result.success){
+
+      alert(result.message);
+
+      loadSales();
+
+    }else{
+
+      alert(result.message);
+
+    }
+
+  })
+
+  .catch(error => {
+
+    console.error(error);
+
+    alert("Error deleting sale");
+
+  });
+
+}
+
+
+// =================================
+// RESET FORM
+// =================================
+
+function resetSalesForm(){
+
+  editingSaleId = null;
+
+  [
+
+    "s-product",
+
+    "s-qty",
+
+    "s-price",
+
+    "s-customer",
+
+    "s-location"
+
+  ].forEach(id => {
+
+    document.getElementById(id).value = "";
+
+  });
+
+  document.getElementById("s-total").value = "0.00";
+
+  document.getElementById("salesFormTitle").textContent = "Add a sale";
+
+  document.getElementById("salesSaveBtn").textContent = "Add sale";
+
+  document.getElementById("salesCancelBtn").style.display = "none";
+
+}
+
+
+// =================================
+// RENDER SALES TABLE
+// =================================
+
+function renderSales(){
+
+  const body = document.getElementById("salesTableBody");
+
+  body.innerHTML = "";
+
+  if(sales.length === 0){
+
+    body.innerHTML =
+
+      '<tr class="empty-row"><td colspan="8">No sales recorded yet.</td></tr>';
+
+    return;
+
+  }
+
+  sales.slice().reverse().forEach(s => {
+
+    const tr = document.createElement("tr");
+
+    tr.innerHTML = `
+
+      <td>${escapeHtml(s.product)}</td>
+
+      <td>${s.qty}</td>
+
+      <td>${Number(s.price).toFixed(2)}</td>
+
+      <td>${escapeHtml(s.customer || "—")}</td>
+
+      <td>${escapeHtml(s.location || "—")}</td>
+
+      <td class="amount">${Number(s.total).toFixed(2)}</td>
+
+      <td>${formatDate(s.date)}</td>
+
+      <td>
+
+        <div class="row-actions">
+
+          <button class="icon-btn view" onclick="viewSale('${s.id}')" title="View">
+
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+
+              <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/>
+
+              <circle cx="12" cy="12" r="3"/>
+
+            </svg>
+
+          </button>
+
+          <button class="icon-btn edit" onclick="editSale('${s.id}')" title="Edit">
+
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+
+              <path d="M12 20h9"/>
+
+              <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/>
+
+            </svg>
+
+          </button>
+
+          <button class="icon-btn delete" onclick="deleteSale('${s.id}')" title="Delete">
+
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+
+              <path d="M3 6h18"/>
+
+              <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6"/>
+
+            </svg>
+
+          </button>
+
+        </div>
+
+      </td>
+
+    `;
+
+    body.appendChild(tr);
+
+  });
+
+}
+
+
+// =================================
+// FORMAT DATE
+// =================================
+
+function formatDate(date){
+
+  if(!date) return "—";
+
+  const d = new Date(date);
+
+  if(isNaN(d.getTime())) return String(date);
+
+  return d.toLocaleString();
+
+}
+
+
+// =================================
+// ESCAPE HTML
+// =================================
+
+function escapeHtml(str){
+
+  const d = document.createElement("div");
+
+  d.textContent = String(str);
+
+  return d.innerHTML;
+
+}
+
+
+// =================================
+// INITIAL LOAD
+// =================================
+
+loadSales();
+
+</script>
+
+</body>
+
+</html>

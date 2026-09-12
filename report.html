@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Report — SDS Foods</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+  :root{
+    --bg:#F1F2F5; --surface:#FFFFFF; --ink:#1A1E27; --muted:#6B7280;
+    --sidebar:#14213D; --sidebar-hover:#1D2E52; --sidebar-text:#B9C3DA;
+    --accent:#C08A3E; --accent-dark:#A5732E; --teal:#3F7D6B; --danger:#B94A48;
+    --border:#E4E6EB; --radius-sm:6px; --radius-md:10px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);display:flex;min-height:100vh;}
+  h1,h2,h3,.brand,.nav-label{font-family:'Space Grotesk',sans-serif;}
+  .sidebar{width:230px;background:var(--sidebar);color:var(--sidebar-text);display:flex;flex-direction:column;
+    position:fixed;top:0;left:0;bottom:0;z-index:40;transition:transform .25s ease;}
+  .brand{display:flex;align-items:center;gap:10px;padding:22px 20px 18px 22px;color:#fff;
+    font-size:19px;font-weight:700;letter-spacing:.2px;border-bottom:1px solid rgba(255,255,255,.08);}
+  .brand-mark{width:26px;height:26px;border-radius:7px;background:linear-gradient(135deg,var(--accent),var(--accent-dark));flex-shrink:0;}
+  nav.navlist{margin-top:14px;display:flex;flex-direction:column;gap:2px;padding:0 10px;}
+  .navlink{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:var(--radius-sm);
+    color:var(--sidebar-text);text-decoration:none;font-size:14.5px;font-weight:500;}
+  .navlink svg{width:18px;height:18px;flex-shrink:0;opacity:.85;}
+  .navlink:hover{background:var(--sidebar-hover);color:#fff;}
+  .navlink.active{background:var(--accent);color:#fff;}
+  .navlink.active svg{opacity:1;}
+  .sidebar-foot{margin-top:auto;padding:16px 22px;font-size:12px;color:#8792AC;border-top:1px solid rgba(255,255,255,.08);}
+  .main{margin-left:230px;flex:1;display:flex;flex-direction:column;min-height:100vh;}
+  .topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:20px 32px;
+    display:flex;align-items:center;justify-content:space-between;}
+  .topbar h1{margin:0;font-size:22px;font-weight:600;}
+  .topbar .sub{margin:2px 0 0;color:var(--muted);font-size:13.5px;}
+  .menu-btn{display:none;background:none;border:none;cursor:pointer;padding:6px;}
+  .menu-btn svg{width:22px;height:22px;color:var(--ink);}
+  .content{padding:28px 32px 60px;flex:1;}
+  .card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:6px;}
+  .home-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);
+    padding:22px 20px;cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:14px;
+    transition:border-color .15s ease, transform .1s ease;text-decoration:none;color:inherit;}
+  .home-card:hover{border-color:var(--accent);}
+  .home-card:active{transform:scale(.99);}
+  .home-card .icon-wrap{width:42px;height:42px;border-radius:9px;display:flex;align-items:center;justify-content:center;
+    background:#F4EBDB;color:var(--accent-dark);}
+  .home-card .icon-wrap svg{width:22px;height:22px;}
+  .home-card h3{margin:0;font-size:16.5px;font-weight:600;}
+  .home-card p{margin:0;color:var(--muted);font-size:13.5px;line-height:1.5;}
+  .empty-state{background:var(--surface);border:1px dashed var(--border);border-radius:var(--radius-md);
+    padding:70px 30px;text-align:center;color:var(--muted);margin-top:6px;}
+  .empty-state svg{width:44px;height:44px;color:#C9CDD6;margin-bottom:14px;}
+  .empty-state p{margin:0;font-size:14px;}
+  .panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:24px;margin-bottom:22px;}
+  .panel h2{margin:0 0 4px;font-size:16px;font-weight:600;}
+  .panel .panel-sub{margin:0 0 18px;color:var(--muted);font-size:13px;}
+  .form-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px 16px;}
+  .field{display:flex;flex-direction:column;gap:6px;}
+  .field label{font-size:12.5px;font-weight:600;color:var(--muted);}
+  .field input, .field select{padding:9px 11px;border:1px solid var(--border);border-radius:var(--radius-sm);
+    font-size:14px;font-family:'Inter',sans-serif;color:var(--ink);background:#FAFBFC;}
+  .field input:focus, .field select:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent);}
+  .field input[readonly]{background:#F0EDE4;color:var(--accent-dark);font-weight:600;}
+  .form-actions{display:flex;gap:10px;margin-top:18px;}
+  .btn{padding:10px 18px;border-radius:var(--radius-sm);border:none;font-size:14px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;}
+  .btn-primary{background:var(--accent);color:#fff;}
+  .btn-primary:hover{background:var(--accent-dark);}
+  .btn-ghost{background:none;border:1px solid var(--border);color:var(--ink);}
+  .btn-ghost:hover{border-color:var(--muted);}
+  .table-wrap{overflow-x:auto;}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;}
+  th{text-align:left;padding:10px 12px;color:var(--muted);font-weight:600;font-size:12px;border-bottom:1px solid var(--border);white-space:nowrap;}
+  td{padding:11px 12px;border-bottom:1px solid var(--border);white-space:nowrap;}
+  tbody tr:hover{background:#FAFBFC;}
+  .row-actions{display:flex;gap:8px;}
+  .icon-btn{width:30px;height:30px;border-radius:7px;border:1px solid var(--border);background:#fff;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;}
+  .icon-btn svg{width:15px;height:15px;}
+  .icon-btn.edit svg{color:var(--teal);}
+  .icon-btn.delete svg{color:var(--danger);}
+  .icon-btn:hover{border-color:var(--muted);}
+  .empty-row td{text-align:center;color:var(--muted);padding:28px;}
+  .amount{font-weight:600;color:var(--accent-dark);}
+  @media(max-width:900px){.form-grid{grid-template-columns:repeat(2,1fr);} .card-grid{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:720px){
+    .sidebar{transform:translateX(-100%);} .sidebar.open{transform:translateX(0);}
+    .main{margin-left:0;} .menu-btn{display:block;}
+    .form-grid{grid-template-columns:1fr;} .card-grid{grid-template-columns:1fr;}
+  }
+
+</style>
+</head>
+<body>
+
+<aside class="sidebar" id="sidebar">
+  <div class="brand"><span class="brand-mark"></span>SDS Foods</div>
+  <nav class="navlist" id="navlist">
+    <a class="navlink" href="home.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v10h5v-6h4v6h5V10"/></svg><span class="nav-label">Home</span></a>
+    <a class="navlink" href="monitoring.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg><span class="nav-label">Monitoring</span></a>
+    <a class="navlink active" href="report.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/><path d="M14 3v5h5"/></svg><span class="nav-label">Report</span></a>
+    <a class="navlink" href="sales.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="20" r="1.3"/><circle cx="18" cy="20" r="1.3"/><path d="M2 3h3l2.4 12.2a2 2 0 0 0 2 1.6h8.1a2 2 0 0 0 2-1.6L21 8H6"/></svg><span class="nav-label">Sales</span></a>
+    <a class="navlink" href="costs.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.5a2.5 2.5 0 0 1 2.5-1h.3a2.2 2.2 0 0 1 0 4.4H12a2.2 2.2 0 0 0 0 4.4h.3a2.5 2.5 0 0 0 2.5-1"/></svg><span class="nav-label">Costs</span></a>
+    <a class="navlink" href="controll.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg><span class="nav-label">Controll</span></a>
+  </nav>
+  <div class="sidebar-foot">Business Console v1.0</div>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <button class="menu-btn" id="menuBtn" aria-label="Toggle menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+      <div>
+        <h1>Report</h1>
+        <p class="sub">Generated reports</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="card-grid">
+      <a class="home-card" href="income.html">
+        <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v10h5v-6h4v6h5V10"/></svg></div>
+        <h3>Income</h3>
+        <p>Overview of your business Income</p>
+      </a>
+      <a class="home-card" href="monitoring.html">
+        <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg></div>
+        <h3>Monitoring</h3>
+        <p>Live monitoring</p>
+      </a>
+      <a class="home-card" href="report.html">
+        <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/><path d="M14 3v5h5"/></svg></div>
+        <h3>Report</h3>
+        <p>Generated reports</p>
+      </a>
+      <a class="home-card" href="sales.html">
+        <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="20" r="1.3"/><circle cx="18" cy="20" r="1.3"/><path d="M2 3h3l2.4 12.2a2 2 0 0 0 2 1.6h8.1a2 2 0 0 0 2-1.6L21 8H6"/></svg></div>
+        <h3>Sales</h3>
+        <p>Manage sales records</p>
+      </a>
+      <a class="home-card" href="costs.html">
+        <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.5a2.5 2.5 0 0 1 2.5-1h.3a2.2 2.2 0 0 1 0 4.4H12a2.2 2.2 0 0 0 0 4.4h.3a2.5 2.5 0 0 0 2.5-1"/></svg></div>
+        <h3>Costs</h3>
+        <p>Manage cost records</p>
+      </a>
+      <a class="home-card" href="controll.html">
+        <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg></div>
+        <h3>Controll</h3>
+        <p>System control</p>
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+document.getElementById('menuBtn').onclick = function(){
+  document.getElementById('sidebar').classList.toggle('open');
+};
+
+</script>
+</body>
+</html>
